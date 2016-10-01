@@ -1,0 +1,49 @@
+# This is a python script that finds the Nth prime in the Aronson sequence
+
+# translations from numeric values to English representation
+num2words = {1: 'first', 2: 'second', 3: 'third', 4: 'fourth', 5: 'fifth', \
+            6: 'Sixth', 7: 'Seventh', 8: 'Eighth', 9: 'Ninth', 10: 'tenth', \
+            11: 'Eleventh', 12: 'twelfth', 13: 'thirteenth', 14: 'Fourteenth', \
+            15: 'Fifteenth', 16: 'Sixteenth', 17: 'Seventeenth', 18: 'Eighteenth', 19: 'Nineteenth'}
+tens2words = ['twentieth', 'thirtieth', 'fortieth', 'fiftieth', 'sixtieth', 'seventieth', 'eightieth', 'ninetieth']            
+tens2words2 = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']            
+hundreds2words = ['onehundred', 'twohundred', 'threehundred', 'fourhundred', 'fivehundred', 'sixhundred', 'sevenhundred', 'eighthundred', 'ninehundred']
+
+
+# method that convert integer to english representation
+def english(n):
+    if 1 <= n < 19:
+        return num2words[n]
+    elif 20 <= n <= 99:
+        tens, digit = divmod(n, 10)
+        if digit == 0:
+            return tens2words[tens -2]
+        return tens2words2[tens - 2] + num2words[digit] #tens2words start with twenty
+    else:
+        print("Number out of range")
+
+
+# method that determine if a number is prime
+def isPrime(n):
+    for i in range(2,int(n**0.5)+1):
+        if n%i==0:
+            return False
+    return True
+
+
+# initialize variables
+text = 'tisthe'
+index = 0
+prime = 1
+
+# run until we find the 6767th prime
+while prime < 6767:
+	index = text.find('t', index)
+	if index == -1:
+		break
+	# append new location to the end of text
+	index += 1
+	text += english(index)
+	if isPrime(index):
+	    print(prime, index)
+	    prime += 1
