@@ -19,6 +19,14 @@ def english(n):
         if digit == 0:
             return tens2words[tens -2]
         return tens2words2[tens - 2] + num2words[digit] #tens2words start with twenty
+    elif 100 <= n <= 999:
+        hundreds = n / 100
+        tens, digit = divmod(n % 10, 10)
+        if tens == 0 & digit == 0:
+            return hundreds2words[hundreds - 1] + 'th'  # hundredth
+        elif digit == 0:
+            return hundreds2words[hundreds - 1] + tens2words[tens - 2]
+        return hundreds2words[hundreds - 1] + tens2words2[tens - 2] + num2words[digit]
     else:
         print("Number out of range")
 
@@ -35,9 +43,10 @@ def isPrime(n):
 text = 'tisthe'
 index = 0
 prime = 1
+n = 50
 
-# run until we find the 6767th prime
-while prime < 6767:
+# run until we find the Nth prime
+while prime < n:
 	index = text.find('t', index)
 	if index == -1:
 		break
