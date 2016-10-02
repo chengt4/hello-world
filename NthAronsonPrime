@@ -22,8 +22,10 @@ def english(n):
     elif 100 <= n <= 999:
         hundreds = n / 100
         tens, digit = divmod(n % 10, 10)
-        if tens == 0 & digit == 0:
+        if tens == 0 and digit == 0:
             return hundreds2words[hundreds - 1] + 'th'  # hundredth
+	elif tens == 0:
+            return hundreds2words[hundreds - 1] + num2words[digit]
         elif digit == 0:
             return hundreds2words[hundreds - 1] + tens2words[tens - 2]
         return hundreds2words[hundreds - 1] + tens2words2[tens - 2] + num2words[digit]
