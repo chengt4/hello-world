@@ -1,4 +1,4 @@
-### COLLABORATED WITH CHRIS CHOI AND BOYAN LI ###
+### CONTRIBUTED BY CHRIS CHOI AND BOYAN LI ###
 # This is a python script that finds the Nth prime in the Aronson sequence
 
 # translations from numeric values to English representation
@@ -76,7 +76,6 @@ def isPrime(n):
         if n % i==0:
             return False
     return True
-
 
 # initialize variables
 text = 'tisthe'
