@@ -1,18 +1,16 @@
+### COLLABORATED WITH CHRIS CHOI AND BOYAN LI ###
 # This is a python script that finds the Nth prime in the Aronson sequence
 
 # translations from numeric values to English representation
-num2words = {1: 'first', 2: 'second', 3: 'third', 4: 'fourth', 5: 'fifth', \
-            6: 'Sixth', 7: 'Seventh', 8: 'Eighth', 9: 'Ninth', 10: 'tenth', \
-            11: 'Eleventh', 12: 'twelfth', 13: 'thirteenth', 14: 'Fourteenth', \
-            15: 'Fifteenth', 16: 'Sixteenth', 17: 'Seventeenth', 18: 'Eighteenth', 19: 'Nineteenth'}
+num2words = {1: 'First', 2: 'Second', 3: 'third', 4: 'Fourth', 5: 'Fifth', 6: 'Sixth', 7: 'Seventh', 8: 'Eighth', 9: 'Ninth', 10: 'tenth', 11: 'Eleventh', 12: 'twelfth', 13: 'thirteenth', 14: 'Fourteenth', 15: 'Fifteenth', 16: 'Sixteenth', 17: 'Seventeenth', 18: 'Eighteenth', 19: 'Nineteenth'}
+num2words2 = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten', 11: 'eleven', 12: 'twelve', 13: 'thirteen', 14: 'fourteen', 15: 'fifteen', 16: 'sixteen', 17: 'seventeen', 18: 'eighteen', 19: 'nineteen'}
 tens2words = ['twentieth', 'thirtieth', 'fortieth', 'fiftieth', 'sixtieth', 'seventieth', 'eightieth', 'ninetieth']            
 tens2words2 = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']            
 hundreds2words = ['onehundred', 'twohundred', 'threehundred', 'fourhundred', 'fivehundred', 'sixhundred', 'sevenhundred', 'eighthundred', 'ninehundred']
 
-
 # method that convert integer to english representation
 def english(n):
-    if 1 <= n < 19:
+    if 1 <= n <= 19:
         return num2words[n]
     elif 20 <= n <= 99:
         tens, digit = divmod(n, 10)
@@ -20,23 +18,62 @@ def english(n):
             return tens2words[tens -2]
         return tens2words2[tens - 2] + num2words[digit] #tens2words start with twenty
     elif 100 <= n <= 999:
-        hundreds = n / 100
-        tens, digit = divmod(n % 10, 10)
+        hundreds = n // 100
+        remaining = n % 100
+        # case 101 -> 119, 201 -> 219, etc.
+        if 1 <= remaining <= 19:
+            return hundreds2words[hundreds - 1] + num2words[remaining]
+        # case 100, 120 -> 200, 220 -> 300, etc. 
+        tens, digit = divmod(n % 100, 10)
         if tens == 0 and digit == 0:
             return hundreds2words[hundreds - 1] + 'th'  # hundredth
-	elif tens == 0:
+        elif tens == 0:
             return hundreds2words[hundreds - 1] + num2words[digit]
         elif digit == 0:
             return hundreds2words[hundreds - 1] + tens2words[tens - 2]
         return hundreds2words[hundreds - 1] + tens2words2[tens - 2] + num2words[digit]
+    elif 1000 <= n <= 999999:
+        thous, hundr = divmod(n, 1000)
+        if hundr == 0:
+            return englishMod(thous) + 'thousandth'
+        else:
+            return englishMod(thous) + 'thousand' + english(hundr)
+    elif 1000000 <= n <= 999999999:
+        mill, thous = divmod(n, 1000000)
+        if thous == 0:
+            return englishMod(mill) + 'millionth'
+        else:
+            return englishMod(mill) + 'million' + english(thous)
     else:
         print("Number out of range")
 
+# Must be between 1 and 999
+def englishMod(n):
+    if 1 <= n <= 19:
+        return num2words2[n]
+    elif 20 <= n <= 99:
+        tens, digit = divmod(n, 10)
+        if digit == 0:
+            return tens2words2[tens - 2]
+        return tens2words2[tens - 2] + num2words2[digit] #tens2words start with twenty
+    else:
+        hundreds = n // 100
+        remaining = n % 100
+        if 1 <= remaining <= 19:
+            return hundreds2words[hundreds - 1] + num2words2[remaining]
+        tens, digit = divmod(remaining, 10)
+        if tens == 0 and digit == 0:
+            return hundreds2words[hundreds - 1]
+        elif tens == 0:
+            return hundreds2words[hundreds - 1] + num2words2[digit]
+        elif digit == 0:
+            return hundreds2words[hundreds - 1] + tens2words2[tens - 2]
+        return hundreds2words[hundreds - 1] + tens2words2[tens - 2] + num2words2[digit]
 
 # method that determine if a number is prime
 def isPrime(n):
     for i in range(2,int(n**0.5)+1):
-        if n%i==0:
+        if n % i==0:
             return False
     return True
 
@@ -44,17 +81,17 @@ def isPrime(n):
 # initialize variables
 text = 'tisthe'
 index = 0
-prime = 1
+prime = 0
 n = 50
 
 # run until we find the Nth prime
 while prime < n:
-	index = text.find('t', index)
-	if index == -1:
-		break
-	# append new location to the end of text
-	index += 1
-	text += english(index)
-	if isPrime(index):
-	    print(prime, index)
-	    prime += 1
+    index = text.find('t', index)
+    if index == -1:
+        break
+    # append new location to the end of text
+    index += 1
+    text += english(index)
+    if isPrime(index):
+        print(prime, index)
+        prime += 1
